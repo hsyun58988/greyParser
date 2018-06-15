@@ -13,6 +13,7 @@ public class parserWord {
 			String[] temp=line[i].split("");//逐字解析
 			for(int a=0;a<temp.length;a++) {
 				String text1=temp[a];//现行文字
+				boolean wrong1 = false;
 				if(text1.equals("\"") && mode==cfg.MODE_COMMON){//在普通模式，如果遇到"则代表进入文本模式，如果已经进入则代表进入正常模式，如果为转义模式则把本符号计入有效字符
 					mode=cfg.MODE_TEXT;//进入文本模式
 					text=text+text1;
@@ -61,60 +62,22 @@ public class parserWord {
 					continue;
 				}
 				
-				//如果为+-*（/）则将前面的做单词，本符号也做单词，不在文本模式
-				if(text1.equals("+") && mode!=cfg.MODE_TEXT){
-					word.add(text);
-					word.add(text1);
-					text="";
-					continue;
-				}
-				if(text1.equals("-") && mode!=cfg.MODE_TEXT){
-					word.add(text);
-					word.add(text1);
-					text="";
-					continue;
-				}
-				if(text1.equals("*") && mode!=cfg.MODE_TEXT){
-					word.add(text);
-					word.add(text1);
-					text="";
-					continue;
-				}
-				if(text1.equals("(") && mode!=cfg.MODE_TEXT){
-					word.add(text);
-					word.add(text1);
-					text="";
-					continue;
-				}
-				if(text1.equals("/") && mode!=cfg.MODE_TEXT){
-					word.add(text);
-					word.add(text1);
-					text="";
-					continue;
-				}
-				if(text1.equals(")") && mode!=cfg.MODE_TEXT){
-					word.add(text);
-					word.add(text1);
-					text="";
-					continue;
-				}
-				if(text1.equals(";") && mode!=cfg.MODE_TEXT){
-					word.add(text);
-					word.add(text1);
-					text="";
-					continue;
-				}
-				if(text1.equals("=") && mode!=cfg.MODE_TEXT){
-					word.add(text);
-					word.add(text1);
-					text="";
-					continue;
-				}
-				if(text1.equals(",") && mode!=cfg.MODE_TEXT){
-					word.add(text);
-					word.add(text1);
-					text="";
-					continue;
+				if(mode!=cfg.MODE_TEXT) {
+					for(int d=0;d<cfg.u.length;d++) {
+						if(cfg.u[d].equals(text1)) {
+							if(!text.equals("")) {
+								word.add(text);
+							}
+							word.add(text1);
+							text="";
+							wrong1=true;
+							break;
+						}
+					}
+					if (wrong1)
+                    {
+                        continue;
+                    }
 				}
 				
 				//如果为.则判断有效字符是否不为数字开头，否则把前面的做单词，本符号也做单词，不在文本模式
