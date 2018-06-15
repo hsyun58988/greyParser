@@ -1,0 +1,6 @@
+{
+	outFile:false,
+	outFile_path:"done.hslangF",
+	parser:{
+				importantWord:{"int","string","float","include"};
+				rule

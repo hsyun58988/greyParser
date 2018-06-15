@@ -1,0 +1,1 @@
+varinti=1+2*3;varStringpath=main.path;varStringpath1=path+"test"+main.path;
